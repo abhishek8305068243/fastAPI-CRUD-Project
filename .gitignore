@@ -1,0 +1,46 @@
+# =========================
+# Python / FastAPI
+# =========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+.env
+
+# =========================
+# Database / Secrets
+# =========================
+.env
+.env.local
+.env.*
+
+
+# =========================
+# Frontend (Node / React)
+# =========================
+node_modules/
+frontend/node_modules/
+
+# Build files
+dist/
+build/
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db

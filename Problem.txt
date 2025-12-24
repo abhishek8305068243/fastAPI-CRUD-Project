@@ -1,0 +1,5 @@
+page flicker problem
+Inside useEffect function > On commenting Inline Initial Fetch > predefined data is not showing in frontend/ not loading in backend
+    - Onscreen on clicking Refresh button we get data
+    
+App.js line no.175 ... dots aa rhe hai 
