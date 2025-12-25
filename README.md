@@ -92,5 +92,5 @@ Database design and operations
 Frontend and backend integration
 Understanding real-world development workflow
 
-📄 License
+📄 License:-
 This project is licensed under the MIT License.
