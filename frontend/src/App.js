@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useMemo } from "react";
-import axios from "axios";
+import axios from "axios";   // Axios HTTP client (API calls ke liye)
 import "./App.css";
 import TaglineSection from "./TaglineSection";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+// Custom toast helper functions
 import {
   toastSuccess,
   toastError,
@@ -11,12 +13,23 @@ import {
   toastWarning,
 } from "./utils/toast";
 
+
+// Axios instance create kiya with base backend URL
+// Isse baar-baar full URL likhne ki zarurat nahi padti
 const api = axios.create({
   baseURL: "http://localhost:8000",
 });
 
 function App() {
+
+  // ======================
+  // State Declarations
+  // ======================
+
+  // Products list jo backend se aayegi
   const [products, setProducts] = useState([]);
+
+  // Form state (Add / Edit product ke liye)
   const [form, setForm] = useState({
     id: "",
     name: "",
@@ -24,13 +37,30 @@ function App() {
     price: "",
     quantity: "",
   });
+
+  // Edit mode ke liye product ID
   const [editId, setEditId] = useState(null);
+
+  // Success message state
   const [message, setMessage] = useState("");
+
+  // Error message state
   const [error, setError] = useState("");
+
+  // Loading state (API calls ke time disable buttons)
   const [loading, setLoading] = useState(false);
+
+  // Search filter text
   const [filter, setFilter] = useState("");
+
+  // Sorting field (id, name, price, quantity)
   const [sortField, setSortField] = useState("id");
+
+  // Sorting direction (asc / desc)
   const [sortDirection, setSortDirection] = useState("asc");
+
+
+
 
   // Auto-dismiss messages after 5 seconds - msg change hota hai to 5 sec bad usko empty kr deta hai
   useEffect(() => {
@@ -38,13 +68,21 @@ function App() {
       const timer = setTimeout(() => {
         setMessage("");
       }, 5000);
+
+      // Cleanup
       return () => clearTimeout(timer);
     }
   }, [message]);
 
+
+
+  // Initial load: fetch products
   useEffect(() => {
     fetchProducts();
   }, []);
+
+
+
 
   // useEffect - error auto dismiss - error msg ko 5 sec bad clear krta hai
   useEffect(() => {
@@ -56,7 +94,9 @@ function App() {
     }
   }, [error]);
 
-  // Fetch all products
+
+
+  // Fetch all products from backend
   const fetchProducts = async () => {
     setLoading(true);
     try {
@@ -66,7 +106,8 @@ function App() {
     } catch (err) {
       setError("Failed to fetch products");
     }
-    setLoading(false);
+      setLoading(false);
+    
   };
 
   // useEffect(() => {
@@ -85,8 +126,12 @@ function App() {
   //   run();
   // }, []);
 
-  // Handle sorting
+
+
+
+  // sorting handler
   const handleSort = (field) => {
+    // Agar same field pe click hua to direction toggle
     if (sortField === field) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
@@ -95,7 +140,7 @@ function App() {
     }
   };
 
-  // Derived list with filter and sorting
+  // Filter + Sort combined (useMemo for performance)
   const filteredProducts = useMemo(() => {
     let filtered = products;
 
@@ -115,7 +160,7 @@ function App() {
       let aVal = a[sortField];
       let bVal = b[sortField];
 
-      // Handle numeric fields
+      // Number fields
       if (
         sortField === "id" ||
         sortField === "price" ||
@@ -140,11 +185,15 @@ function App() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Reset form
+
+  // ======================
+  // Reset form after submit / cancel
+  // ======================
   const resetForm = () => {
-    setForm({ id: "", name: "", description: "", price: "", quantity: "" });
+    setForm({ id: "", name: "", description: "", price: "", quantity: "", category:""});
     setEditId(null);
   };
+
 
   // Create or update product**************************************************
   const handleSubmit = async (e) => {
@@ -154,6 +203,7 @@ function App() {
     setError("");
     try {
       if (editId) {
+        // update product
         const response = await api.put(`/products/${editId}`, {
           ...form,
           id: Number(form.id),
@@ -163,6 +213,8 @@ function App() {
         console.log("Update: ", response);
         toastSuccess("Product updated successfully");
 
+
+        // UI me product update
         if (response.data) {
           setProducts((prev) =>
             prev.map((item) => {
@@ -174,6 +226,7 @@ function App() {
           );
         }
       } else {
+        // CREATE product
         const response = await api.post("/products/", {
           ...form,
           id: Number(form.id),
@@ -197,7 +250,7 @@ function App() {
     setLoading(false);
   };
 
-  // Edit product**************************************************************
+  // Edit Button handler**************************************************************
   const handleEdit = (product) => {
     setForm({
       id: product.id,
@@ -205,6 +258,7 @@ function App() {
       description: product.description,
       price: product.price,
       quantity: product.quantity,
+      category: product.category,
     });
     setEditId(product.id);
     setMessage("");
@@ -234,9 +288,17 @@ function App() {
     setLoading(false);
   };
 
+
+  //======================
+  // Price formatting helper
+  // ======================
   const currency = (n) =>
     typeof n === "number" ? n.toFixed(2) : Number(n || 0).toFixed(2);
 
+
+  // ======================
+  // JSX UI Rendering
+  // ======================
   return (
     <div className="app-bg">
       <header className="topbar">
@@ -254,6 +316,7 @@ function App() {
           </button>
         </div>
       </header>
+      
 
       <div className="container">
         <div className="stats">
@@ -311,6 +374,14 @@ function App() {
                 name="quantity"
                 placeholder="Quantity"
                 value={form.quantity}
+                onChange={handleChange}
+                required
+              />
+              <input
+                type="text"
+                name="category"
+                placeholder="category"
+                value={form.category}
                 onChange={handleChange}
                 required
               />

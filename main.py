@@ -13,25 +13,28 @@ app = FastAPI()
 
 
 # Here we add the origins separately (& also we can add more than 1 origins)
+# Ye wo frontend URLs hai jinko backend allow krega
 origins = [
-    "http://localhost:3000",
+    "http://localhost:3000",    # React Frontend
     # Add another frontend origins as needed (e.g., production domain)
 ]
 
 app.add_middleware(
-    CORSMiddleware,         # React se API calls allow krta hai 
-    allow_origins=origins,
+    CORSMiddleware,         # Frontend se API calls allow krta hai 
+    allow_origins=origins,  # sirf specified origins allowed (like above)
     allow_credentials=True, #Allow cookies and authorization headers
     allow_methods=["*"],    #Allow all standard HTTP methods (GET, PUT, POST, DELETE etc)
     allow_headers=["*"],    #Allow all headers
 )
 
-# Define the startup event function using the decorator
+# Application startup event function using the decorator
+
+# App start hote hi ye function call hota hai
 @app.on_event("startup")
 def startup_event():
     print("👉 startup_event CALLED")
 
-    # Initialize the database connection (if necessary, though 'engine' might handle this)
+    # Database initialize karna
     init_db()
 
     # Create all defined tables of (SQLAlchemy models) in the database
@@ -39,31 +42,38 @@ def startup_event():
 
 
 # Route Endpoint (Test route)
+# Simple test route to check API running or not
 @app.get("/")
 def greet():
-    return "Welcome to Telusko Trac"
+    return "Hey Abhishek! API is running"
 
 
-# Default Products
+# Default In-memory Products
+# (sirf initial DB seeding ke liye)
 products = [
-    Product(id=1, name="phone", description="A smartphone", price=699.99, quantity=50),
-    Product(id=2, name="Laptop", description="A powerful laptop", price=999.99, quantity=30),
-    Product(id=5, name="Pen", description="A blue ink pen", price=1.99, quantity=100),
-    Product(id=6, name="Table", description="A wooden table", price=199.99, quantity=50),
+    Product(id=1, name="phone", description="A smartphone", price=699.99, quantity=50, category = "Electronic device"),
+    Product(id=2, name="Laptop", description="A powerful laptop", price=999.99, quantity=30, category = "Electronic device"),
+    Product(id=5, name="Pen", description="A blue ink pen", price=1.99, quantity=100, category = "Study material"),
+    Product(id=6, name="Table", description="A wooden table", price=199.99, quantity=50, category = "Wooden Material"),
     
 ]
 
 # Database Session Dependency
+
+# Ye function har API request ke liye
+# ek naya database session deta hai
 def get_db():
     db = SessionLocal()    # Har API request ke liye DB session deta hai
     try:
-        yield db
+        yield db           # API ko session provide karta hai
     finally:
-        db.close()
+        db.close()         # Request complete hone ke baad session close
     
 
 
-# Database Initialization Function
+# Database Initialization Logic
+
+# App startup par DB me data hai ya nahi ye check karta hai
 def init_db():
     print("init_db CALLED")
     db = SessionLocal()
@@ -82,9 +92,14 @@ def init_db():
         db.close()
 
 
+# ==============================
+# API Endpoints
+# ==============================
+
+# 🔹 Get all products
 @app.get("/products")
 def get_all_products(db: Session = Depends(get_db)):
-    
+    # Database se saare products fetch karta hai
     db_products = db.query(database_models.Product).all()
     return db_products
     # db = SessionLocal()
@@ -92,26 +107,32 @@ def get_all_products(db: Session = Depends(get_db)):
     # return products 
 
 
+# 🔹 Get product by ID
 @app.get("/products/{id}")
 def get_product_by_id(id: int, db: Session = Depends(get_db)):
+    # ID ke basis par single product fetch
     db_product = db.query(database_models.Product).filter(database_models.Product.id == id).first()
     if db_product:  
         return db_product  
     #return "product not found"
 
 
+# 🔹 Add new product
 @app.post("/products", response_model=ProductResponse)
 def add_product(product: Product, db: Session = Depends(get_db)):
+    # Pydantic model ko SQLAlchemy model me convert kar rahe hain
     new_product = database_models.Product(**product.model_dump())
     
     db.add(new_product)
     db.commit()
+    
+    # Database se updated object reload karta hai (ID generate hoti hai)
     db.refresh(new_product)   # 👈 gets generated ID
 
     return new_product
 
 
-
+# 🔹 Update existing product
 @app.put("/products/{id}", response_model=ProductResponse)
 def update_product(id: int, product: Product, db: Session = Depends(get_db)):
     db_product = (

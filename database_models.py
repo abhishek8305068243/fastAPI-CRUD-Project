@@ -30,3 +30,4 @@ class Product(Base):
     description: Mapped[str] = mapped_column(String(255))
     price: Mapped[float] = mapped_column(Float)
     quantity: Mapped[int] = mapped_column(Integer)
+    category: Mapped[str] = mapped_column(String(255))
