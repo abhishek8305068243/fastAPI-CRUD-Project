@@ -145,6 +145,7 @@ def update_product(id: int, product: Product, db: Session = Depends(get_db)):
     db_product.description = product.description
     db_product.price = product.price
     db_product.quantity = product.quantity
+    db_product.category = product.category
 
     db.commit()
     db.refresh(db_product)   # 👈 updated data reload

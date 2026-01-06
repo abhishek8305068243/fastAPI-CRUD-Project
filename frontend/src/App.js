@@ -212,6 +212,7 @@ function App() {
           id: Number(form.id),
           price: Number(form.price),
           quantity: Number(form.quantity),
+          category: (form.category),
         });
         console.log("Update: ", response);
         toastSuccess("Product updated successfully");
