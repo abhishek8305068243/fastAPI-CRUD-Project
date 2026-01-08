@@ -21,7 +21,7 @@ How CORS works in a frontend-backend architecture
 How to manage a full-stack project using Git & GitHub
 
 
-✨ Features
+✨ Features :-
 
 Create, Read, Update, and Delete (CRUD) operations
 
