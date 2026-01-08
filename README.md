@@ -1,4 +1,4 @@
-FastAPI CRUD Application:-
+FastAPI CRUD Application:-   test Git pull
 
 This repository contains a full-stack CRUD application built to understand and demonstrate real-world backend and frontend development concepts.
 The project focuses on building RESTful APIs using FastAPI, integrating a PostgreSQL database, and connecting it with a React-based frontend.
