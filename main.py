@@ -4,6 +4,7 @@ from models import Product, ProductResponse
 from database import SessionLocal, engine
 import database_models
 from sqlalchemy.orm import Session
+from mockData import products
 
 
 

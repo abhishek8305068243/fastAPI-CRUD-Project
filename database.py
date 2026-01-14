@@ -1,14 +1,14 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+db_url = os.getenv("DB_URL")
 
-# Define your database URL using postgres
-db_url="postgresql://postgres:Abhishek%40123@localhost:5432/mydatabase"
+if not db_url:
+    raise ValueError("DB_URL environment variable is not set")
 
 # Create the SQLALchemy engine
-engine = create_engine(db_url)     
+engine = create_engine(db_url)
 
 # SessionLocal --> Create a session (named sessionLocal) class                                    
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-
