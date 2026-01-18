@@ -17,7 +17,7 @@ import {
 // Axios instance create kiya with base backend URL
 // Isse baar-baar full URL likhne ki zarurat nahi padti
 const api = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: "https://fastapi-crud-project-2-2sm8.onrender.com",
 });
 
 function App() {
