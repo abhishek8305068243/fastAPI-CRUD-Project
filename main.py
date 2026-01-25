@@ -10,21 +10,20 @@ from mockData import products
 
 # Create the fastapi app instance
 # ye backend application object hai, sare routes isi se judte hai
-app = FastAPI(redirect_slashes=False)
+app = FastAPI()
 
 
 # Here we add the origins separately (& also we can add more than 1 origins)
 # Ye wo frontend URLs hai jinko backend allow krega
 origins = [
     "http://localhost:3000",    # React Frontend
-    "https://fast-api-crud-project.vercel.app",  # Production frontend (trailing slash remove)
-    "http://localhost:3000/",
     "https://fast-api-crud-project.vercel.app/",
+    # Add another frontend origins as needed (e.g., production domain)
 ]
 
 app.add_middleware(
     CORSMiddleware,         # Frontend se API calls allow krta hai 
-    allow_origins=origins,  # Use the origins list instead of "*"
+    allow_origins=["*"],    # Allow all origins (for development)
     allow_credentials=True, #Allow cookies and authorization headers
     allow_methods=["*"],    #Allow all standard HTTP methods (GET, PUT, POST, DELETE etc)
     allow_headers=["*"],    #Allow all headers

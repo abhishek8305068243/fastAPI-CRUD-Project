@@ -102,7 +102,7 @@ function App() {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const res = await api.get("/products/");
+      const res = await api.get("/products");
       setProducts(res.data);
       setError("");
     } catch (err) {
@@ -189,7 +189,7 @@ function App() {
     try {
       if (editId) {
         // update product
-        const response = await api.put(`/products/${editId}`, {
+        const response = await api.put(`/products${editId}`, {
           ...form,
           id: Number(form.id),
           price: Number(form.price),
@@ -213,7 +213,7 @@ function App() {
         }
       } else {
         // CREATE product
-        const response = await api.post("/products/", {
+        const response = await api.post("/products", {
           ...form,
           id: Number(form.id),
           price: Number(form.price),
@@ -260,7 +260,7 @@ function App() {
     setMessage("");
     setError("");
     try {
-      await api.delete(`/products/${id}`);
+      await api.delete(`/products${id}`);
       toastSuccess("Product deleted successfully");
       // fetchProducts();
 
