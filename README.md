@@ -41,30 +41,29 @@ Clean and beginner-friendly project structure
   Backend
   
     FastAPI (Python)
-    
+
     SQLAlchemy
-    
+
     PostgreSQL
 
   Frontend
-  
+
     React
-    
+
     JavaScript
-    
+
     HTML
-    
+
     CSS
 
-  Tools & Version Control
-  
+Tools & Version Control
+
     Git
-    
+
     GitHub
 
-
 fastAPI-CRUD-Project/
-  
+
 │
 ├── main.py
 
@@ -78,16 +77,15 @@ fastAPI-CRUD-Project/
 
 ├── frontend/
 
-│   ├── src/
+│ ├── src/
 
-│   ├── public/
+│ ├── public/
 
-│   └── package.json
+│ └── package.json
 
 ├── .gitignore
 
 └── README.md
-
 
 Setup instructions:-
 
@@ -105,7 +103,7 @@ myenv\Scripts\activate
 
 Install backend dependencies: pip install fastapi uvicorn sqlalchemy psycopg2
 
-Run the FastAPI server      : uvicorn main:app --reload
+Run the FastAPI server : uvicorn main:app --reload
 
 Backend will be available at: http://127.0.0.1:8000
 
@@ -117,8 +115,7 @@ npm install
 
 npm start
 
-Frontend will run at        : http://localhost:3000
-
+Frontend will run at : http://localhost:3000
 
 🔗 API Endpoints (Examples):-
 
@@ -129,7 +126,6 @@ POST /products – Create a new product
 PUT /products/{id} – Update an existing product
 
 DELETE /products/{id} – Delete a product
-
 
 🎯 Purpose of This Project:-
 
@@ -142,7 +138,6 @@ Database design and operations
 Frontend and backend integration
 
 Understanding real-world development workflow
-
 
 📄 License:-
 

@@ -17,6 +17,7 @@ app = FastAPI()
 # Ye wo frontend URLs hai jinko backend allow krega
 origins = [
     "http://localhost:3000",    # React Frontend
+    "https://fast-api-crud-project.vercel.app/",
     # Add another frontend origins as needed (e.g., production domain)
 ]
 
